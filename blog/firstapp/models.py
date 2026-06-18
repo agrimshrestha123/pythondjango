@@ -6,10 +6,13 @@ from django.db import models
 
 class Posts(models.Model):
     POST_CHOICES=[
-        (1,'literature'),
-        (2,'sports'),
-        (3,'technology')
+        ('l','literature'),
+        ('s','sports'),
+        ('t','technology')
     ]
+    class Meta:
+        verbose_name='Post'
+        verbose_name_plural='Posts'
     author=models.CharField(default="unknown", max_length=100)
     category=models.CharField(choices=POST_CHOICES)
     title=models.CharField(max_length=200)
@@ -20,5 +23,9 @@ class Posts(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     
+    def __str__(self):
+        return self.author
 
+    def create_slug(self):
+        slug=self.slug
 
