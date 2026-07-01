@@ -1,0 +1,16 @@
+{%extends "firstapp/index.html"%}
+{%if post%}
+{% block title %}{{post.title}}{% endblock title %}
+{%endif%}
+
+{%block content%}
+{%if post%}
+<div class="container">
+    <h5>{{post.title}}</h5>
+    <p>{{post.author}}</p>
+    <p>{{post.content}}</p>
+</div>
+{%else%}
+<div>post with id {{post.id}} does not exist</div>
+{%endif%}
+{%endblock content%}
