@@ -6,14 +6,14 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def first_view(request):
-    return HttpResponse("Hello, World!! This is the first view.")
+# def first_view(request):
+#     return HttpResponse("Hello, World!! This is the first view.")
 
 def profile_view(request):
     message="my profile picture"
     return render(request, "firstapp/profile.html", {"message":message})
 
-@login_required
+
 def html_view(request):
     posts=Posts.objects.all()
     user=request.user
@@ -25,6 +25,8 @@ def create_post(request):
     if request.method=='POST':
         post=CreateBlogPostForm(request.POST)
         if post.is_valid():
+            post.save(commit=False)
+            author=request.user
             post.save()
             return redirect('html_view')
     else:
@@ -65,7 +67,8 @@ def signup_view(request):
 
 from django.contrib.auth import authenticate,logout
 def login_view(request):
-    if request.method=='POST':
+    error=None
+    if request.method=="POST":
         username=request.POST.get('username')
         password=request.POST.get('password')
 
@@ -74,11 +77,32 @@ def login_view(request):
         if user:
             login(request, user)
             return redirect('html_view')
+        else:
+            error = "Invalid username or password."
+
     
-    return render(request, 'firstapp/login.html')
-            
+    return render(request, 'firstapp/login.html', {"error": error})
+
 
 def logout_view(request):
     if request.method=="POST":
         logout(request)
         return redirect("login")
+    
+from django.shortcuts import get_object_or_404
+
+def edit_post(request, post_id):
+    post = get_object_or_404(Posts, pk=post_id, author=request.user)
+
+    if request.method == "POST":
+        form = CreateBlogPostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', post_id=post_id)
+    else:
+        form = CreateBlogPostForm(instance=post)
+
+    return render(request, "firstapp/edit_post.html", {
+        "post": post,
+        "form": form,
+    })

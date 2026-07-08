@@ -1,6 +1,8 @@
 {%extends "firstapp/index.html"%}
 {%if post%}
 {% block title %}{{post.title}}{% endblock title %}
+{%else%}
+<div>post detail</div>
 {%endif%}
 
 {%block content%}
@@ -9,6 +11,9 @@
     <h5>{{post.title}}</h5>
     <p>{{post.author}}</p>
     <p>{{post.content}}</p>
+    <!--update and delete feature-->
+    <a href="{%url 'edit' post.id%}">Edit</a>
+    <a href="">Delete</a>
 </div>
 {%else%}
 <div>post with id {{post.id}} does not exist</div>
