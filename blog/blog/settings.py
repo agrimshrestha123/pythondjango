@@ -116,3 +116,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+LOGIN_URL = "login" #When an anonymous user tries to access a view protected by @login_required
+LOGIN_REDIRECT_URL = "html_view" #After a user logs in successfully
+LOGOUT_REDIRECT_URL = "login"   #After a user logs out
+# Need to log in? → LOGIN_URL
+# Just logged in? → LOGIN_REDIRECT_URL
+# Just logged out? → LOGOUT_REDIRECT_URL

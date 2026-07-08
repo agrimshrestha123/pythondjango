@@ -13,8 +13,9 @@ def profile_view(request):
     message="my profile picture"
     return render(request, "firstapp/profile.html", {"message":message})
 
-
+@login_required
 def html_view(request):
+    q=request.GET.get("q","").strip()
     posts=Posts.objects.all()
     user=request.user
     return render(request, 'firstapp/index.html', { "posts": posts, "user":user })
@@ -35,6 +36,7 @@ def create_post(request):
     return render(request, "firstapp/create_post.html",{"post":post})
 
 from .models import Posts
+@login_required
 def get_post_view(request):
      posts=Posts.objects.all()
      error_message ="something went wrong."
@@ -90,7 +92,7 @@ def logout_view(request):
         return redirect("login")
     
 from django.shortcuts import get_object_or_404
-
+@login_required
 def edit_post(request, post_id):
     post = get_object_or_404(Posts, pk=post_id, author=request.user)
 

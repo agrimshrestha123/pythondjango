@@ -2,13 +2,21 @@
 {%block content%}
 {%if posts%}
 {%for post in posts%}
-<div>
-    {{post.title}}
-    {{post.author}}
-    {{post.content}}
-    {{post.category}}
-    {{post.created_at}}
-</div>  
+<main class="container">
+    <a href="{%url 'post_detail' post.id%}" class="text-decoration-none">
+        <div class="card mb-4">
+            <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+                <p class="text-secondary">
+                    <span>{{post.author}}</span>
+                    <span>{{post.category}}</span>
+                    <span>{{post.created_at}}</span>
+                </p>
+                 <p class="card-text">{{post.content|truncatewords:20}}</p>
+            </div>
+        </div>
+    </a>
+</main> 
 {%endfor%}
 {%else%}
 <p>no post available</p>
