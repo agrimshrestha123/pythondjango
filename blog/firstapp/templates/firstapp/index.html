@@ -9,7 +9,8 @@
 
     </title>
 <link rel="stylesheet" href="{%static 'firstapp/style.css'%}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">    
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     
   </head>
@@ -39,24 +40,36 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
       </ul>
       
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-      <p>username:{{user}}</p>
-      <!--logout button-->
-      <form method="post" action={%url 'logout'%}>
-        {% csrf_token %}
-        <button type="submit" >
-          Logout
+      <form class="d-flex mx-auto" role="search" style="max-width: 600px; width: 100%;">
+         <div class="input-group">
+
+        <input 
+            class="form-control rounded-start-pill"
+            type="search"
+            placeholder="Search"
+            aria-label="Search">
+
+        <button 
+            class="btn btn-light border rounded-end-pill px-4"
+            type="submit">
+            🔍
         </button>
+
+       </div>
       </form>
-      <p><a href="{%url 'signup' %}">signup</a></p>
+      <div class="d-flex align-items-center gap-3">
+        <span class="text-black fw-semibold"><i  class="bi bi-person-circle">{{user}}</i></span>
+        <!--logout button-->
+        <form method="post" action={%url 'logout'%} class="mb-0">
+          {% csrf_token %}
+          <button type="submit"  class="btn btn-outline-danger btn-sm rounded-pill px-3">
+            Logout
+          </button>
+        </form>
+        <a href="{%url 'signup' %}"  class="btn btn-success btn-sm rounded-pill px-3">signup</a>
+      </div>
     </div>
   </div>
 </nav>

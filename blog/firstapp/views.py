@@ -8,14 +8,13 @@ from django.contrib.auth.decorators import login_required
 
 # def first_view(request):
 #     return HttpResponse("Hello, World!! This is the first view.")
-
+@login_required
 def profile_view(request):
     message="my profile picture"
     return render(request, "firstapp/profile.html", {"message":message})
 
 @login_required
 def html_view(request):
-    q=request.GET.get("q","").strip()
     posts=Posts.objects.all()
     user=request.user
     return render(request, 'firstapp/index.html', { "posts": posts, "user":user })
