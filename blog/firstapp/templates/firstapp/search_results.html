@@ -1,0 +1,28 @@
+    {%extends "firstapp/index.html"%}
+    {%block content%}
+    <div>
+        <h5>Search results for "{{ q }}"</h5>
+    </div>
+    {%if results%}
+        {%for post in results%}
+        <a href="{%url 'post_detail' post.id%}" class="text-decoration-none">
+                <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{post.title}}</h5>
+                    <p class="text-secondary">
+                    <span>{{post.author}}</span>
+                    <span>{{post.category}}</span>
+                    <span></span>
+                    <span>{{post.created_at|date:"m-d"}}</span>
+                    </p>
+                    <p class="card-text">{{post.content|truncatewords:20}}</p>
+                    
+                    
+                </div>
+                </div>
+        </a>
+        {%endfor%}
+        {%else%}
+        <p>no post available.</p>
+        {%endif%}
+      {%endblock content%}

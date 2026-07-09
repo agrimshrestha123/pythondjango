@@ -42,14 +42,17 @@
         </li>
       </ul>
       
-      <form class="d-flex mx-auto" role="search" style="max-width: 600px; width: 100%;">
+      <form class="d-flex mx-auto" role="search" style="max-width: 600px; width: 100%;" action="{%url 'search' %}">
          <div class="input-group">
 
         <input 
             class="form-control rounded-start-pill"
             type="search"
             placeholder="Search"
-            aria-label="Search">
+            aria-label="Search"
+            name="q"
+             value="{{query}}"
+             >
 
         <button 
             class="btn btn-light border rounded-end-pill px-4"

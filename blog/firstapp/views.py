@@ -26,7 +26,7 @@ def create_post(request):
         post=CreateBlogPostForm(request.POST)
         if post.is_valid():
             post.save(commit=False)
-            author=request.user
+            post.author=request.user
             post.save()
             return redirect('html_view')
     else:
@@ -93,7 +93,7 @@ def logout_view(request):
 from django.shortcuts import get_object_or_404
 @login_required
 def edit_post(request, post_id):
-    post = get_object_or_404(Posts, pk=post_id, author=request.user)
+    post = get_object_or_404(Posts, pk=post_id) #, author=request.user
 
     if request.method == "POST":
         form = CreateBlogPostForm(request.POST, instance=post)
@@ -107,3 +107,9 @@ def edit_post(request, post_id):
         "post": post,
         "form": form,
     })
+
+from django.db.models import Q
+def search(request):
+    q=request.GET.get("q","").strip()
+    results=Posts.objects.filter(Q(title__icontains=q)|Q(content__icontains=q))
+    return render(request, 'firstapp/search_results.html', {"results":results,"query":q})
