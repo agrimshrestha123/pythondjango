@@ -25,9 +25,9 @@ def create_post(request):
     if request.method=='POST':
         post=CreateBlogPostForm(request.POST)
         if post.is_valid():
-            post.save(commit=False)
-            post.author=request.user
-            post.save()
+            post_instance=post.save(commit=False)
+            post_instance.created_by=request.user
+            post_instance.save()
             return redirect('html_view')
     else:
         post=CreateBlogPostForm()
@@ -89,12 +89,15 @@ def logout_view(request):
     if request.method=="POST":
         logout(request)
         return redirect("login")
-    
+
+# from django.contrib import messages
 from django.shortcuts import get_object_or_404
 @login_required
 def edit_post(request, post_id):
-    post = get_object_or_404(Posts, pk=post_id) #, author=request.user
-
+    post = get_object_or_404(Posts, pk=post_id,created_by=request.user) #, author=request.user
+    # if post.created_by != request.user:
+    #     messages.error(request, "You can only edit your own posts.")
+    #     return redirect("html_view")
     if request.method == "POST":
         form = CreateBlogPostForm(request.POST, instance=post)
         if form.is_valid():
