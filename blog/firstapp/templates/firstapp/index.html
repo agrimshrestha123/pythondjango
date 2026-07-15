@@ -34,7 +34,7 @@
             Services
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{%url 'profile_view'%}">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
             <li><a class="dropdown-item" href="#">Setting</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
@@ -63,15 +63,20 @@
        </div>
       </form>
       <div class="d-flex align-items-center gap-3">
-        <span class="text-black fw-semibold"><i  class="bi bi-person-circle">{{user}}</i></span>
-        <!--logout button-->
-        <form method="post" action={%url 'logout'%} class="mb-0">
-          {% csrf_token %}
-          <button type="submit"  class="btn btn-outline-danger btn-sm rounded-pill px-3">
-            Logout
-          </button>
-        </form>
-        <a href="{%url 'signup' %}"  class="btn btn-success btn-sm rounded-pill px-3">signup</a>
+        {%if request.user.is_authenticated%}
+        <span class="text-black fw-semibold"><i  class="bi bi-person-circle"></i>{{request.user.username}}</span>
+          <!--logout button-->
+          <form method="post" action={%url 'logout'%} class="mb-0">
+            {% csrf_token %}
+            <button type="submit"  class="btn btn-outline-danger btn-sm rounded-pill px-3">
+              Logout
+            </button>
+          </form>
+          <a href="{%url 'profile_view'%}" class="btn btn-success btn-sm rounded-pill px-3">Profile</a>
+        {%else%}
+          <a href="{%url 'login' %}"  class="btn btn-success btn-sm rounded-pill px-3">login</a>
+          <a href="{%url 'signup' %}"  class="btn btn-success btn-sm rounded-pill px-3">signup</a>
+        {%endif%}
       </div>
     </div>
   </div>
