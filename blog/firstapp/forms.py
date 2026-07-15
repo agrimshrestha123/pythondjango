@@ -31,23 +31,46 @@ from django.contrib.auth.models import User
 
 class SignUpForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput, required=True)
+    # email = forms.EmailField(widget=forms.EmailInput,required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     confirm_password = forms.CharField(widget=forms.PasswordInput, required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'confirm_password']
+        # fields = ['username','email', 'password', 'confirm_password']
+        fields = ['username','password', 'confirm_password']
 
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username already exists")
+        return username
+    
+    # def clean_email(self):
+    #     print("email check running")
+    #     email=self.cleaned_data.get("email")
+    #     if User.objects.filter(email=email).exists():
+    #         raise forms.ValidationError("Email already exists")
+    #     return email
+    
+    def clean_password(self):
+        print("password clean running")
+        password = self.cleaned_data.get("password")
+        if len(password) < 8:
+            raise forms.ValidationError("Password is too short")
+        return password
+    
     def clean(self):
         cleaned_data = super().clean()
-
-        password = cleaned_data["password"]
-        confirm_password = cleaned_data["confirm_password"]
-
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Passwords didn't match")
-
         return cleaned_data
+    
+    
+    
 
     
         
