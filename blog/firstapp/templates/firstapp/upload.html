@@ -1,0 +1,12 @@
+{%extends "firstapp/index.html"%}
+{%block title%}
+    upload profile
+{%endblock title%}
+{%block content%}
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <label>Profile Picture</label>
+        {{form.as_p}}
+        <button type="submit">Upload</button>
+    </form>
+{%endblock content%}

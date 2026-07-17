@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Posts
+from .models import Posts, Profile
 from .forms import CreateBlogPostForm
 from django.contrib.auth.decorators import login_required
 
@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def profile_view(request):
     message="my profile picture"
-    return render(request, "firstapp/profile.html", {"message":message})
+    picture = Profile.objects.get(user=request.user)
+    return render(request, "firstapp/profile.html", {"message":message, "picture":picture})
 
 @login_required
 def html_view(request):
@@ -58,9 +59,12 @@ def signup_view(request):
             user=User.objects.create_user(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password'])
+                # email=form.cleaned_data['email'])
+            Profile.objects.create(user=user)
             user.save()
             login(request, user)
             return redirect('html_view')
+        
     else:
         form=SignUpForm()
 
@@ -116,3 +120,28 @@ def search(request):
     q=request.GET.get("q","").strip()
     results=Posts.objects.filter(Q(title__icontains=q)|Q(content__icontains=q))
     return render(request, 'firstapp/search_results.html', {"results":results,"query":q})
+
+from .forms import ProfileForm
+@login_required
+def profile_pic(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=profile
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view')
+
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(
+        request,
+        'firstapp/upload.html',
+        {"form": form}
+    )

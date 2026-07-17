@@ -4,4 +4,15 @@
 <div>
     this is profile page
 </div>
+{% if picture.picture %}
+    <img src="{{ picture.picture.url }}">
+{% else %}
+    <p>No profile picture uploaded</p>
+{% endif %}
+<a href="{% url 'upload_profile'%}">upload profile picture</a>
+{% if user.is_authenticated %}  
+<p>hello,{{user.username}} </p>
+<a href="{%url 'logout'%}">logout</a>
+
+{% endif %}
 {%endblock content%}

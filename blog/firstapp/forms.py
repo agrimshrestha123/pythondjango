@@ -14,7 +14,8 @@ class CreateBlogPostForm(forms.ModelForm):
                 "placeholder":"Enter Post Title"
             }),
             "image_url":forms.URLInput(attrs={
-                "placeholder":"image.com"
+                "placeholder":"image.com",
+                "class" : 'form-control'
             }),
             "status":forms.TextInput(),
             "content":forms.Textarea(attrs={
@@ -26,14 +27,28 @@ class CreateBlogPostForm(forms.ModelForm):
                 "placeholder":"Enter Post Slug"
             })
         }
-
+# attrs-> html attributes
 from django.contrib.auth.models import User
 
 class SignUpForm(forms.ModelForm):
-    username = forms.CharField(widget=forms.TextInput, required=True)
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={
+            "class":"form-control"
+        }
+    ), required=True)
     # email = forms.EmailField(widget=forms.EmailInput,required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
-    confirm_password = forms.CharField(widget=forms.PasswordInput, required=True)
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            "class":"form-control"
+        }
+    ), required=True)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            "class":"form-control"
+        }
+    ), required=True)
+    # picture=forms.ImageField(upload_to='profile_pic')
+    # document=forms.FileField
 
     class Meta:
         model = User
@@ -41,7 +56,7 @@ class SignUpForm(forms.ModelForm):
         fields = ['username','password', 'confirm_password']
 
 
-    def clean_username(self):
+    def clean_username(self): 
         username = self.cleaned_data.get("username")
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError("Username already exists")
@@ -69,6 +84,11 @@ class SignUpForm(forms.ModelForm):
             raise forms.ValidationError("Passwords didn't match")
         return cleaned_data
     
+from .models import Profile
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model= Profile
+        fields=['picture']
     
     
 

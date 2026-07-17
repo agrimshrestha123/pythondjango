@@ -122,3 +122,6 @@ LOGOUT_REDIRECT_URL = "html_view"   #After a user logs out
 # Need to log in? → LOGIN_URL
 # Just logged in? → LOGIN_REDIRECT_URL
 # Just logged out? → LOGOUT_REDIRECT_URL
+
+MEDIA_ROOT = str(BASE_DIR / "media")
+MEDIA_URL = str("/media/")

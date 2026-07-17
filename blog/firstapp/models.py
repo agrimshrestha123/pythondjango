@@ -22,7 +22,7 @@ class Posts(models.Model):
     slug=models.CharField(unique=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    created_by=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=True)
+    created_by=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return self.title
@@ -30,3 +30,7 @@ class Posts(models.Model):
     def create_slug(self):
         slug=self.slug
 
+from django.contrib.auth.models import User
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True, blank=True)
+    picture=models.ImageField(upload_to='profile_pic', blank=True, null=True)
